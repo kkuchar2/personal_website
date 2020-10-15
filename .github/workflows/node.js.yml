@@ -11,7 +11,8 @@ on:
 
 jobs:
   build:
-
+    env:
+      working-directorty: ./frontend  
     runs-on: ubuntu-latest
 
     strategy:
