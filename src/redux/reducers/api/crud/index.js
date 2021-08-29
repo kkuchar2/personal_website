@@ -6,3 +6,6 @@ export * from 'appRedux/reducers/api/crud/getModelDataSlice.js';
 
 export {default as updateModelDataReducer} from 'appRedux/reducers/api/crud/updateModelDataSlice.js';
 export * from 'appRedux/reducers/api/crud/updateModelDataSlice.js';
+
+export {default as addItemToTableReducer} from 'appRedux/reducers/api/crud/addItemToTableSlice.ts';
+export * from 'appRedux/reducers/api/crud/addItemToTableSlice.ts';

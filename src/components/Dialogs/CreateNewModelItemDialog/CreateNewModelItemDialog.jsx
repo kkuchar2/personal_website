@@ -1,8 +1,9 @@
+import { tryAddItemToTable} from "appRedux/reducers/api/crud";
 import {hide_dialog} from "appRedux/reducers/application";
 import {FieldRow} from "components/Dialogs/ConfirmationDialog/FieldRow/FieldRow.jsx";
 import {getColumnProperties} from "components/Models/columnProperties.js";
 import {Button, Text} from "kuchkr-react-component-library";
-import React, {useCallback} from "react";
+import React, { useCallback, useState } from "react";
 import {useDispatch} from "react-redux";
 import {
     cancelButtonTheme,
@@ -24,12 +25,15 @@ function humanize(str) {
 
 const CreateNewModelItemDialog = (props) => {
 
-    const {modelName, fields} = props;
+    const {modelPackage, modelName, fields} = props;
+
+    const [formData, setFormData] = useState({});
 
     const dispatch = useDispatch();
 
-    const createFormField = useCallback((type, name, isEditable, idx) => {
+    const createFormField = useCallback((type, name, isEditable, onChange, idx) => {
         const colProps = getColumnProperties(type);
+
         return <FieldRow
             name={name}
             title={name + ':'}
@@ -37,8 +41,18 @@ const CreateNewModelItemDialog = (props) => {
             inEditMode={true}
             key={idx}
             fullWidth={true}
+            onChange={onChange}
             isEditable={true}/>;
     }, [fields]);
+
+    const onFieldChange = useCallback((fieldName, value) => {
+        console.log("!")
+        console.log(value)
+        setFormData(formData => ({...formData, [fieldName]: value}));
+    }, [formData]);
+
+    console.log("------ Form data : -----------");
+    console.log(formData);
 
     const renderFields = useCallback(() => {
         const size = fields.length;
@@ -50,7 +64,7 @@ const CreateNewModelItemDialog = (props) => {
             console.log(fieldInfo);
             const name = humanize(fieldInfo.name);
             if (fieldInfo.isEditable) {
-                formRows.push(createFormField(fieldInfo.type, name, fieldInfo.isEditable, i));
+                formRows.push(createFormField(fieldInfo.type, name, fieldInfo.isEditable, (name, v) => onFieldChange(fieldInfo.name, v), i));
             }
         }
 
@@ -62,9 +76,10 @@ const CreateNewModelItemDialog = (props) => {
     }, []);
 
     const onConfirm = useCallback(() => {
-        // TODO: do not close immediately, only if the form is valid and item was added to DB
+        // TODO: do not close immediately, only if the form is valid and item was added to DB\
+        dispatch(tryAddItemToTable(modelPackage, modelName, formData));
         dispatch(hide_dialog());
-    }, []);
+    }, [formData, modelName, modelPackage]);
 
     return <StyledCreateNewModelItemDialog>
         <StyledDialogTitleSection>

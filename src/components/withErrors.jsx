@@ -1,7 +1,7 @@
 import {FieldError} from "components/FormComponents/FormErrors/FieldError.jsx";
 import React, {useCallback, useEffect, useState} from "react";
 import {useTranslation} from "react-i18next";
-import {getFormFieldError} from "util/api_util.js";
+import {getFormFieldError} from "util/api_util.ts";
 
 const formFieldTheme = {
     backgroundColor: "rgba(255,255,255,0)",

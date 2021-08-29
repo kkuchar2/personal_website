@@ -1,6 +1,6 @@
 import {Button} from "kuchkr-react-component-library";
 import React from "react";
-import {lazyImport} from "util/util.js";
+import {lazyImport} from "util/util.ts";
 import {withSuspense} from "util/withSuspense.js";
 
 const RegistrationPage = lazyImport(() => import (/* webpackChunkName: "auth-chunk" */ "pages/RegistrationPage/RegistrationPage.jsx"));

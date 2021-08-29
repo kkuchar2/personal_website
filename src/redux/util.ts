@@ -1,14 +1,13 @@
 import axios from "axios";
 import Cookies from "universal-cookie/es6";
-import {createNetworkError} from "util/api_util.js";
+import {createNetworkError} from "../util/api_util";
 
-export const BASE_URL_DEV = "https://api.kkucharski.com";
+const isProduction = process.argv[process.argv.indexOf('--mode') + 1] === 'production';
 
-export const BASE_API_URL_DEVELOPMENT = BASE_URL_DEV + "/api";
+export const BASE_URL_DEV = isProduction ? "https://api.kkucharski.com" : 'http://0.0.0.0:8001';
+export const API_URL = BASE_URL_DEV + "/api";
 
-export const BASE_API_URL_PRODUCTION = "https://klkucharski-api.com/api";
-
-export const buildApiUrl = name => BASE_API_URL_DEVELOPMENT + "/" + name;
+export const buildApiUrl = name => API_URL + "/" + name;
 
 const sendPostWithCookies = async (url, body = {}) => {
     console.debug(`%c[POST]: ${url}, body: ${JSON.stringify(body)}`, "color: #ccff44");

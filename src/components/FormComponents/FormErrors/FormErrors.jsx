@@ -1,7 +1,7 @@
 import {FormError} from "components/FormComponents/FormErrors/FormError.jsx";
 import _ from 'lodash';
 import React from "react";
-import {getResponseError} from "util/api_util.js";
+import {getResponseError} from "util/api_util.ts";
 
 export const FormErrors = (props) => {
 

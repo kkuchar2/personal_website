@@ -1,21 +1,12 @@
-import {selectorAuth} from "appRedux/reducers/api/account";
-import axios from "axios";
-import {StyledDashboard, StyledResponsiveReactGridLayout, StyledTile} from "components/Dashboard/style.js";
-import {animatedWindowProps} from "components/FormComponents/animation.js";
-import "leaflet/dist/leaflet.css";
+import { selectorAuth } from "appRedux/reducers/api/account";
+import { StyledDashboard, StyledResponsiveReactGridLayout } from "components/Dashboard/style.js";
+import { animatedWindowProps } from "components/FormComponents/animation.js";
 
-import React, {useCallback, useEffect, useRef, useState} from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 
 import 'react-grid-layout/css/styles.css';
-import {MapContainer, Marker, Popup, TileLayer, useMap} from "react-leaflet";
-import {useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import 'react-resizable/css/styles.css';
-
-const ResizeMap = () => {
-    const map = useMap();
-    map._onResize();
-    return null;
-};
 
 const Dashboard = (props) => {
 
@@ -91,20 +82,6 @@ const Dashboard = (props) => {
         }
     };
 
-    async function mapEffect({leafletElement: map} = {}) {
-        let response;
-
-        try {
-            response = await axios.get('https://corona.lmao.ninja/v2/countries');
-        }
-        catch (e) {
-            console.log(`Failed to fetch countries: ${e.message}`, e);
-            return;
-        }
-
-        const {data = []} = response;
-    }
-
     return <StyledDashboard {...animatedWindowProps}>
         <StyledResponsiveReactGridLayout style={{height: "100%"}} ref={ref}
 
@@ -121,26 +98,6 @@ const Dashboard = (props) => {
                                          margin={[marginX, marginY]}
                                          compactType={'vertical'}
                                          cols={cols}>
-            <StyledTile key="e">
-                <MapContainer style={{width: "100%", height: "100%"}}
-                              attributionControl={false}
-                              whenCreated={mapInstance => {
-                                  mapRef.current = mapInstance;
-                                  onMapCreated();
-                              }}
-                              center={[51.505, -0.09]} zoom={11} scrollWheelZoom={true}>
-                    <ResizeMap/>
-                    <TileLayer style={{width: "100%", height: "100%"}}
-                               attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    />
-                    <Marker position={[51.505, -0.09]}>
-                        <Popup>
-                            A pretty CSS3 popup. <br/> Easily customizable.
-                        </Popup>
-                    </Marker>
-                </MapContainer>
-            </StyledTile>
         </StyledResponsiveReactGridLayout>
     </StyledDashboard>;
 };

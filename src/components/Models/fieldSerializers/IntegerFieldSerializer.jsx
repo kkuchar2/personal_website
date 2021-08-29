@@ -1,4 +1,4 @@
-import {Input, Text} from "kuchkr-react-component-library";
+import { Input, Text } from "kuchkr-react-component-library";
 import React from "react";
 
 const textTheme = {
@@ -29,15 +29,10 @@ export const IntegerFieldSerializer = (props) => {
 
     const {name, value, inEditMode, onChange, isEditable, inputCustomTheme} = props;
 
-    console.log("integerField: " + value)
-
-    const onFieldChange = v => {
-        console.log('On field change for serialzier name: '+ name)
-        onChange(v);
-    }
-
     if (inEditMode && isEditable) {
-        return <Input theme={inputCustomTheme ? inputCustomTheme : inputTheme} initialValue={value ? value.toString() : ""} placeholder={'Enter value'} title={null} onChange={onFieldChange}/>;
+        return <Input theme={inputCustomTheme ? inputCustomTheme : inputTheme}
+                      initialValue={value ? value.toString() : ""} placeholder={'Enter value'} title={null}
+                      onChange={onChange}/>;
     }
     return <Text theme={textTheme} style={{width: '100%', overflow: 'auto'}} text={value}/>;
 };

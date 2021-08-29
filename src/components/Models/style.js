@@ -46,33 +46,22 @@ export const addItemButtonTheme = {
 export const modelSelectorTheme = isMobile => {
     return {
         width: isMobile ? "100%" : "480px",
-        height: "50px",
-        border: '1px solid ' + "#eeeeee",
-        borderRadius: '10px',
-        textColor: '#505050',
-        disabledTextColor: '#959595',
-        backgroundColor: "rgba(255,255,255)",
-        disabledBackgroundColor: '#dcdcdc',
-        hoverBackgroundColor: "#ffffff",
-        iconColor: "#7a7a7a",
-        disabledIconColor: "#959595",
-        fontSize: '0.9em',
-        fontWeight: "500",
-        margin: isMobile ? "0px 0px 10px 0px" : "0px 0px 0px 0px",
-
-        listStyle: {
-            background: "rgba(255,255,255,0.72)",
-            listItemStyle: {
-                textColor: "#2d2d2d",
-                textColorHover: "#ffffff",
-                disabledTextColor: "#9c9c9c",
-                background: "#ffffff",
-                disabledBackground: "#e5e5e5",
-                backgroundHover: "rgba(0,180,105,1)",
-                paddingLeft: "15px",
-                paddingRight: "15px"
-            }
-        }
+        height: 50,
+        boxShadow: "none",
+        border: 'none',
+        backgroundColor: '#edf1f6',
+        placeholderTextColor: '#3a3a3a',
+        selectedSingleValueTextColor: '#2b2b2b',
+        arrowColor: '#5d5959',
+        arrowColorHover: '#5d5959',
+        indicatorSeparatorColor: '#afafaf',
+        borderRadius: 4,
+        listBorderRadius: 4,
+        listBackgroundColor: '#edf1f6',
+        listItemTextColor: "#343434",
+        itemHoverBackgroundColor: '#0085FF',
+        itemSelectedBackgroundColor: '#55aaff',
+        itemHoverTextColor:  '#ffffff',
+        listItemHeight: 50
     };
-}
-
+};

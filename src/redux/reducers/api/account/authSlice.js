@@ -1,5 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {sendFilePost, sendPost} from "appRedux/util.js";
+import {sendFilePost, sendPost} from "appRedux/util.ts";
 
 const initialState = {
     path: null,

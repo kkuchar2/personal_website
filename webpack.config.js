@@ -2,7 +2,7 @@ const HtmlWebPackPlugin = require("html-webpack-plugin");
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
-
+const webpack = require('webpack');
 const path = require('path');
 
 const resolvePath = pathSegments => path.resolve(__dirname, pathSegments);
@@ -26,10 +26,6 @@ const optimization = {
                 test: /[\\/]node_modules[\\/](react-bootstrap)[\\/]/,
                 name: "bootstrap-vendor"
             },
-            threeVendor: {
-                test: /[\\/]node_modules[\\/](three)[\\/]/,
-                name: "three-vendor"
-            },
             vendor: {
                 test: /[\\/]node_modules[\\/](!react-bootstrap)(!lodash)(!moment)(!moment-timezone)[\\/]/,
                 name: "vendor"
@@ -44,14 +40,14 @@ module.exports = {
         poll: 1000
     },
     output: {
-        filename: 'chunk-[name]-[contenthash].js',
-        sourceMapFilename: "[name].js.map",
+        filename: 'chunk-[file]-[contenthash].js',
+        sourceMapFilename: "[file].js.map",
         globalObject: "(typeof self!='undefined'?self:this)",
         pathinfo: false
     },
     devtool: "source-map",
     resolve: {
-        extensions: [".js", ".jsx"],
+        extensions: [".js", ".jsx", ".ts", ".tsx"],
         modules: ['node_modules', resolvePath('src')],
         alias: {
             images: resolvePath('assets/images/'),
@@ -67,7 +63,6 @@ module.exports = {
     devServer: {
         port: 3000,
         host: "0.0.0.0",
-        disableHostCheck: true,
         historyApiFallback: true,
         headers: {
             // "Cross-Origin-Embedder-Policy": "require-corp",
@@ -78,6 +73,7 @@ module.exports = {
         new HtmlWebPackPlugin({template: resolvePath("src/index.html")}),
         new MomentLocalesPlugin({localesToKeep: ['es-us', 'pl']}),
         new CompressionPlugin({algorithm: 'gzip', test: /\.js$/}),
+        new webpack.ProvidePlugin({ process: 'process/browser'}),
         new CopyPlugin({
             patterns: [
                 {from: resolvePath('assets/fonts'), to: resolvePath('dist/assets/images')},

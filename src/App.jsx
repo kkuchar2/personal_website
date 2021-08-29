@@ -1,4 +1,4 @@
-import {store} from "appRedux/store.js";
+import {store} from "appRedux/store.ts";
 import Dialogs from "components/Dialogs/Dialogs";
 import React from "react";
 import {Provider} from "react-redux";

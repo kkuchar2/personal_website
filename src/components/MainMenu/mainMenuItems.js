@@ -8,8 +8,8 @@ import TableChartIcon from '@material-ui/icons/TableChart';
 
 export const mainMenuItems = {
     "Dashboard": {
-        id: 'Dahsboard',
-        displayName: "Dashboard",
+        id: 'Dashboard',
+        displayName: "Dashboardd",
         description: null,
         icon: HomeOutlinedIcon,
         component: Dashboard

@@ -1,51 +1,50 @@
-import {useMediaQuery} from "@material-ui/core";
+import { useMediaQuery } from "@material-ui/core";
 import {
     getAllModelData,
     getSingleRowModelData,
+    selectorAddItemToTable,
     selectorModelData,
     selectorModelList,
     selectorUpdateModelData,
     tryGetListOfModels
 } from "appRedux/reducers/api/crud";
-import {changeCurrentViewedModel, selectorCurrentViewedModel, showDialog} from "appRedux/reducers/application";
+
+import { changeCurrentViewedModel, selectorCurrentViewedModel, showDialog } from "appRedux/reducers/application";
+import { useAppDispatch } from "appRedux/store";
 import CreateNewModelItemDialog from "components/Dialogs/CreateNewModelItemDialog/CreateNewModelItemDialog.jsx";
 
-import {animatedWindowProps3} from "components/FormComponents/animation.js";
-import {spinnerTheme} from "components/FormComponents/commonStyles.js";
+import { animatedWindowProps3 } from "components/FormComponents/animation.js";
+import { spinnerTheme } from "components/FormComponents/commonStyles.js";
 import Table from "components/Models/Table/Table.jsx";
-import {Button, Select, Spinner} from "kuchkr-react-component-library";
-import _ from "lodash";
+import { Button, Select, Spinner } from "kuchkr-react-component-library";
 
-import React, {useCallback, useEffect, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {addItemButtonTheme, modelSelectorTheme, StyledModelsView, StyledToolbar} from "./style.js";
-
+import React, { useCallback, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { withRequestComplete } from "util/util.ts";
+import { addItemButtonTheme, modelSelectorTheme, StyledModelsView, StyledToolbar } from "./style.js";
 
 const ModelsView = (props) => {
 
     const currentModel = useSelector(selectorCurrentViewedModel);
     const currentModelName = currentModel.model;
     const currentModelPackage = currentModel.package;
-    const currentModelFullname = currentModel.fullModelName;
+    const currentModelFullName = currentModel.fullModelName;
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const modelListSelector = useSelector(selectorModelList);
     const modelDataSelector = useSelector(selectorModelData);
     const updateModelSelector = useSelector(selectorUpdateModelData);
+    const addItemToTableSelector = useSelector(selectorAddItemToTable);
 
     const modelList = modelListSelector.modelList;
     const modelData = modelDataSelector.modelsData;
 
-    const tableData = !currentModelFullname ? null : modelData[currentModelFullname];
+    const tableData = !currentModelFullName ? null : modelData[currentModelFullName];
     const fields = tableData ? tableData.headers : null;
     const rows = tableData ? tableData.rows : null;
 
-    const selectedModelIndex = _.findIndex(modelList, {'model': currentModelName});
-
     const isMobile = useMediaQuery('(max-width: 1200px)');
-
-    console.log(isMobile)
 
     useEffect(() => {
         dispatch(tryGetListOfModels());
@@ -58,21 +57,20 @@ const ModelsView = (props) => {
         dispatch(getAllModelData(currentModelPackage, currentModelName));
     }, [currentModelName, currentModelPackage]);
 
-    useEffect(() => {
-        const path = updateModelSelector.path;
-        const isUpdateModelCtx = path === 'updateModel';
-        const isUpdateComplete = !updateModelSelector.requestSent && updateModelSelector.responseReceived;
-        const hasNoErrors = updateModelSelector.errors.length === 0;
-
-        if (isUpdateModelCtx && isUpdateComplete && hasNoErrors) {
-            if (updateModelSelector.responseData) {
-                const id = updateModelSelector.responseData['updated_id'];
-                dispatch(getSingleRowModelData(currentModelPackage, currentModelName, id));
-            }
+    withRequestComplete(updateModelSelector, 'updateModel', () => {
+        if (updateModelSelector.responseData) {
+            const id = updateModelSelector.responseData['updated_id'];
+            dispatch(getSingleRowModelData(currentModelPackage, currentModelName, id));
         }
-    }, [updateModelSelector]);
+    });
 
-    const onSelected = useCallback((index, value) => {
+    withRequestComplete(addItemToTableSelector, 'addItem', () => {
+        dispatch(getAllModelData(currentModelPackage, currentModelName));
+    });
+
+    const onSelected = useCallback((selectedOption) => {
+        const value = selectedOption.value;
+
         if (!value) {
             return;
         }
@@ -101,10 +99,19 @@ const ModelsView = (props) => {
             component: CreateNewModelItemDialog,
             props: {
                 fields: fields,
+                modelPackage: currentModelPackage,
                 modelName: currentModelName
             }
         }));
-    }, [fields, currentModelName])
+    }, [fields, currentModelName]);
+
+    const modelListForSelect = [];
+
+    if (modelList) {
+        modelList.forEach((x, i) => {
+            modelListForSelect.push({value: x, label: x.model});
+        });
+    }
 
     const renderToolbar = useCallback(() => {
         const path = modelListSelector.path;
@@ -116,17 +123,18 @@ const ModelsView = (props) => {
                 <Spinner theme={spinnerTheme} text={null}/>
             </div>;
         }
+
         return <StyledToolbar {...animatedWindowProps3}>
             <Select
                 theme={modelSelectorTheme(isMobile)}
-                items={modelList}
-                dataItemRenderer={item => <div>Table - {item.model}</div>}
-                itemValueProvider={item => <div>{item.model}</div>}
-                initialIndex={selectedModelIndex >= 0 ? selectedModelIndex : 0}
+                options={modelListForSelect}
+                placeholder={'Select table'}
+                disabled={false}
+                isSearchable={false}
                 onChange={onSelected}
             />
             <Button theme={addItemButtonTheme} text={`Add new row`} onClick={onAddNewItemClick}/>
-        </StyledToolbar>
+        </StyledToolbar>;
     }, [modelListSelector, currentModelName, modelData, isMobile]);
 
     return <StyledModelsView>

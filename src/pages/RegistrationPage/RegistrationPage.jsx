@@ -5,7 +5,7 @@ import EnsureAuthorized from "hoc/EnsureAuthorized.jsx";
 import {StyledRegistrationPage} from "pages/RegistrationPage/style.js";
 import React, {useCallback, useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {withNotStatus, withStatus} from "util/util.js";
+import {withNotStatus, withStatus} from "util/util.ts";
 
 const RegistrationPage = () => {
 

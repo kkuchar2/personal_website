@@ -4,7 +4,7 @@ import {StyledForgotPasswordPage} from "pages/ForgotPasswordPage/style.js";
 import React, {useCallback, useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {selectorForgotPassword, tryResetForgotPasswordState} from "appRedux/reducers/api/account";
-import {withNotStatus, withStatus} from "util/util.js";
+import {withNotStatus, withStatus} from "util/util.ts";
 
 const ForgotPasswordPage = () => {
 

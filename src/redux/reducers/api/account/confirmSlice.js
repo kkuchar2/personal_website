@@ -1,5 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {sendPost} from "appRedux/util.js";
+import {sendPost} from "appRedux/util.ts";
 
 const initialState = {
     status: "INIT",

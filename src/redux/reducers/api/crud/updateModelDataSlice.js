@@ -1,5 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {sendPost} from "appRedux/util.js";
+import {sendPost} from "appRedux/util.ts";
 
 const initialState = {
     path: null,
@@ -33,8 +33,6 @@ export const updateModelDataSlice = createSlice({
 });
 
 export const tryUpdateModelData = (modelPackage, model, data) => {
-    console.log('Updating model data: ' + modelPackage);
-    console.log(data);
     return sendPost({
         endpointName: 'updateModel',
         onBefore: sentUpdateModelDataRequest,
@@ -58,4 +56,5 @@ export const {
     updateModelDataFailed,
     updateModelDataResetState
 } = updateModelDataSlice.actions;
+
 export default updateModelDataSlice.reducer;

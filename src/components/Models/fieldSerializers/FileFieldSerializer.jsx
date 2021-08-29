@@ -1,4 +1,4 @@
-import {BASE_URL_DEV} from "appRedux/util.js";
+import {BASE_URL_DEV} from "appRedux/util.ts";
 import {StyledProfilePicture} from "components/EditableProfilePictureProperty/style.js";
 import React from "react";
 

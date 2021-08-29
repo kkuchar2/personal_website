@@ -2,7 +2,7 @@ import {Route, Switch} from "react-router-dom";
 import React, {useCallback} from "react";
 import {routes} from "routes";
 import {withSuspense} from "util/withSuspense.js";
-import {lazyImport} from "util/util.js";
+import {lazyImport} from "util/util.ts";
 
 const NotFound = lazyImport(() => import (/* webpackChunkName: "not-found" */ "pages/NotFoundPage/NotFoundPage.jsx"));
 
