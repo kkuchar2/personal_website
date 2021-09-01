@@ -1,9 +1,10 @@
-const HtmlWebPackPlugin = require("html-webpack-plugin");
-const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
+const path = require('path');
+
 const CompressionPlugin = require('compression-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
+const HtmlWebPackPlugin = require("html-webpack-plugin");
+const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 const webpack = require('webpack');
-const path = require('path');
 
 const resolvePath = pathSegments => path.resolve(__dirname, pathSegments);
 
@@ -40,8 +41,8 @@ module.exports = {
         poll: 1000
     },
     output: {
-        filename: 'chunk-[file]-[contenthash].js',
-        sourceMapFilename: "[file].js.map",
+        filename: 'chunk-[name]-[contenthash].js',
+        sourceMapFilename: "chunk-[name]-[contenthash].js.map",
         globalObject: "(typeof self!='undefined'?self:this)",
         pathinfo: false
     },
@@ -51,7 +52,6 @@ module.exports = {
         modules: ['node_modules', resolvePath('src')],
         alias: {
             images: resolvePath('assets/images/'),
-            fonts: resolvePath('assets/fonts/'),
             pages: resolvePath('src/pages/'),
             configs: resolvePath('configs/'),
             appRedux: resolvePath('src/redux/'),
@@ -76,7 +76,6 @@ module.exports = {
         new webpack.ProvidePlugin({ process: 'process/browser'}),
         new CopyPlugin({
             patterns: [
-                {from: resolvePath('assets/fonts'), to: resolvePath('dist/assets/images')},
                 {from: resolvePath('assets/images'), to: resolvePath('dist/assets/images')},
                 {from: resolvePath('assets/translation'), to: resolvePath('dist/assets/translation')},
             ],

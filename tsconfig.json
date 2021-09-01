@@ -1,17 +1,17 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
+    "baseUrl": "src",
     "paths": {
       "images": ["images"],
-      "util/*": ["src/js/util/*"],
-      "appRedux/*": ["src/redux/*"],
+      "util/*": ["util/*"],
+      "appRedux/*": ["redux/*"],
       "configs": ["configs"],
-      "components/*": ["src/js/components/*"],
-      "workers": ["src/js/workers"],
-      "styles": ["src/scss/"],
-      "componentStyles": ["src/scss/components/"]
+      "components/*": ["components/*"],
+      "styles": ["scss/"],
+      "componentStyles": ["scss/components/"]
     },
     "rootDir": "src",
+    "strict": true,
     "declaration": true,
     "declarationDir": "dist",
     "module": "esnext",

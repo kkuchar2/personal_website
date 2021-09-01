@@ -1,15 +1,17 @@
+import {createNetworkError} from "util/api_util";
+
+import {AppDispatch} from "appRedux/store";
 import axios from "axios";
 import Cookies from "universal-cookie/es6";
-import {createNetworkError} from "../util/api_util";
 
 const isProduction = process.argv[process.argv.indexOf('--mode') + 1] === 'production';
 
 export const BASE_URL_DEV = isProduction ? "https://api.kkucharski.com" : 'http://0.0.0.0:8001';
 export const API_URL = BASE_URL_DEV + "/api";
 
-export const buildApiUrl = name => API_URL + "/" + name;
+export const buildApiUrl = (name: string) => API_URL + "/" + name;
 
-const sendPostWithCookies = async (url, body = {}) => {
+const sendPostWithCookies = async (url: string, body = {}) => {
     console.debug(`%c[POST]: ${url}, body: ${JSON.stringify(body)}`, "color: #ccff44");
 
     const csrfToken = new Cookies().get('csrftoken');
@@ -23,7 +25,7 @@ const sendPostWithCookies = async (url, body = {}) => {
     });
 };
 
-const sendFileWithCookies = async (url, file = null) => {
+const sendFileWithCookies = async (url: string, file: File) => {
     console.debug(`%c[POST]: ${url}, file`, "color: #ccff44");
 
     let data = new FormData(); // creates a new FormData object
@@ -46,14 +48,21 @@ const sendFileWithCookies = async (url, file = null) => {
     });
 };
 
-const sendPostAndParse = (requestFunc, path, onBefore, onSuccess, onFail, body = {}) => {
-    return async dispatch => {
+interface RequestParams {
+    path: string,
+    onBefore: Function,
+    onSuccess: Function,
+    onFail: Function,
+    body: object
+}
+
+const sendPostAndParse = (requestFunc: Function, {path, onBefore, onSuccess, onFail, body = {}}: RequestParams) => {
+    return async (dispatch: AppDispatch) => {
         try {
             dispatch(onBefore({errors: [], path: path, body: body}));
             //await new Promise(r => setTimeout(r, 1000));
             parseResponse(path, dispatch, await requestFunc(buildApiUrl(path), body), onSuccess, onFail);
-        }
-        catch (e) {
+        } catch (e: any) {
             console.log(e);
 
             if (e.message === 'Network Error') {
@@ -76,7 +85,7 @@ const sendPostAndParse = (requestFunc, path, onBefore, onSuccess, onFail, body =
     };
 };
 
-const parseResponse = (path, dispatch, response, onSuccess, onFail) => {
+const parseResponse = (path: string, dispatch: AppDispatch, response: any, onSuccess: any, onFail: any) => {
     if (response === undefined) {
         dispatch(onFail("No response"));
         return;
@@ -110,12 +119,6 @@ const parseResponse = (path, dispatch, response, onSuccess, onFail) => {
     }
 };
 
-export const sendPost = (params) => {
-    const {endpointName, onBefore, onSuccess, onFail, body = {}} = params;
-    return sendPostAndParse(sendPostWithCookies, endpointName, onBefore, onSuccess, onFail, body);
-};
+export const sendPost = (params: RequestParams) => sendPostAndParse(sendPostWithCookies, params);
 
-export const sendFilePost = (params) => {
-    const {endpointName, onBefore, onSuccess, onFail, file = null} = params;
-    return sendPostAndParse(sendFileWithCookies, endpointName, onBefore, onSuccess, onFail, file);
-};
+export const sendFilePost = (params: RequestParams) => sendPostAndParse(sendFileWithCookies, params);

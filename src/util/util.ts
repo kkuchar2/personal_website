@@ -1,19 +1,11 @@
-import {lazy, useCallback, useEffect} from "react";
+import {DependencyList, useCallback, useEffect} from "react";
 
-import packageJson from "../../package.json";
+import {AppDispatch} from "appRedux/store";
 
-export const getBuildDate = () => packageJson.buildDate;
-
-export const getParentHeight = thisMount => thisMount.current.offsetHeight;
-
-export const getParentWidth = thisMount => thisMount.current.offsetWidth;
-
-export const lazyImport = importFunc => lazy(() => retry(() => importFunc()));
-
-export const retry = (func, retriesLeft = 5, interval = 1000) =>
+export const retry = (func: { (): any; (): Promise<unknown>; }, retriesLeft = 5, interval = 1000) =>
     new Promise((resolve, reject) => func()
         .then(resolve)
-        .catch((error) => {
+        .catch((error: any) => {
             setTimeout(() => {
                 if (retriesLeft === 1) {
                     reject(error);
@@ -24,7 +16,7 @@ export const retry = (func, retriesLeft = 5, interval = 1000) =>
         }));
 
 // Trigger hook on deps change only if all deps are not null and not undefined
-export const useEffectWithNonNull = (func, deps) =>
+export const useEffectWithNonNull = (func: () => void, deps: ReadonlyArray<any>) =>
     useEffect(() => {
         for (let i = 0; i < deps.length; i++) {
             let dep = deps[i];
@@ -35,7 +27,7 @@ export const useEffectWithNonNull = (func, deps) =>
         func();
     }, deps);
 
-export const withRequestComplete = (selector, path, onComplete) => {
+export const withRequestComplete = (selector: any, path: string, onComplete: Function) => {
     useEffect(() => {
         const isCorrectContext = selector.path === path;
         const isRequestComplete = !selector.requestSent && selector.responseReceived;
@@ -48,18 +40,23 @@ export const withRequestComplete = (selector, path, onComplete) => {
 };
 
 // Hook for unmount
-export const useEffectWithUnmount = func => useEffect(() => func, []);
+export const useEffectWithUnmount = (func: () => void) => {
+    useEffect(() => {
+        func();
+    }, []);
+};
 
 // Trigger hook on deps change only if boolVar is true
-export const useEffectOnTrue = (boolVar, func, deps) =>
+export const useEffectOnTrue = (boolVar: boolean, func: () => void, deps: DependencyList) => {
     useEffect(() => {
-        if (boolVar === true) {
+        if (boolVar) {
             func();
         }
     }, deps);
+};
 
 // Trigger hook on deps change only if boolVar is true and deps not null
-export const filteredBoolUseEffect = (boolVar, func, deps) =>
+export const filteredBoolUseEffect = (boolVar: boolean, func: () => void, deps: DependencyList) =>
     useEffect(() => {
         for (let i = 0; i < deps.length; i++) {
             let dep = deps[i];
@@ -68,27 +65,19 @@ export const filteredBoolUseEffect = (boolVar, func, deps) =>
             }
         }
 
-        if (boolVar === false) {
+        if (!boolVar) {
             func();
         }
     }, deps);
 
-export const callbackOf = (dispatch, func) => useCallback(() => func(dispatch), [dispatch]);
+export const callbackOf = (dispatch: AppDispatch, func: (dispatch: AppDispatch) => void) => {
+    useCallback(() => {
+        func(dispatch);
+    }, [dispatch]);
+};
 
-export const withCondition = (variable, func) => {
+export const withCondition = (variable: any, func: () => void) => {
     if (variable) {
-        return func();
-    }
-};
-
-export const withStatus = (status, statusName, func) => {
-    if (status === statusName) {
-        return func();
-    }
-};
-
-export const withNotStatus = (status, statusName, func) => {
-    if (status !== statusName) {
         return func();
     }
 };

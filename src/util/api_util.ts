@@ -1,17 +1,14 @@
-export const getResponseError = (errors, context, key) => {
-    if (!errors || !context)
-    {
+export const getResponseError = (errors: any, context: string, key?: string) => {
+    if (!errors || !context) {
         return [];
     }
 
-    if (context === 'generic')
-    {
+    if (context === 'generic') {
         const anyErrors = errors['generic'];
         return anyErrors ? anyErrors : [];
     }
 
-    if (context === 'form' && key)
-    {
+    if (context === 'form' && key) {
         const formContextErrors = errors['form'];
 
         if (formContextErrors) {
@@ -24,17 +21,19 @@ export const getResponseError = (errors, context, key) => {
     return [];
 };
 
-export const getFormFieldError = (errors, fieldId) => getResponseError(errors, 'form', fieldId);
+export const getFormFieldError = (errors: any, fieldId: string | undefined) => {
+    return getResponseError(errors, 'form', fieldId);
+};
 
-export const createError = (errorType, errorMessage, errorSource) => {
+export const createError = (errorType: string, errorMessage: string, errorSource: string) => {
     return {
-        'type' : errorType,
-        'message' : errorMessage,
-        'source' : errorSource
+        'type': errorType,
+        'message': errorMessage,
+        'source': errorSource
     };
 };
 
-export const createNetworkError = (source) => {
+export const createNetworkError = (source: string) => {
     return {
         "generic": [createError("network_error", "NETWORK_ERROR", source)]
     };
