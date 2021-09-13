@@ -1,6 +1,5 @@
-import {addItemToTableSlice} from "appRedux/reducers/api/crud/addItemToTableSlice";
 import {createBaseRequestSlice, sendPostRequest} from "appRedux/reducers/generic_reducer";
-import {AppDispatch, RootState} from "appRedux/store";
+import {API_URL, AppDispatch, RootState} from "appRedux/store";
 
 export interface IFieldInfo {
     name: string,
@@ -9,7 +8,7 @@ export interface IFieldInfo {
 
 export const listModelsSlice = createBaseRequestSlice({name: 'listModels'});
 
-export const tryGetListOfModels = () => sendPostRequest('listModels', {}, addItemToTableSlice);
+export const tryGetListOfModels = () => sendPostRequest(API_URL, 'listModels', {}, listModelsSlice);
 
 export const tryResetModelListState = () => async (dispatch: AppDispatch) => dispatch(onReset());
 

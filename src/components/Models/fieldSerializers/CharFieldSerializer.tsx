@@ -11,20 +11,36 @@ const textTheme = {
 };
 
 const inputTheme = {
-    backgroundColor: "#ffffff",
-    textColor: "#2f2f2f",
-    placeholderTextColor: "#c5c5c5",
-    border: "none",
-    borderFocus: "none",
-    borderRadius: "6px",
-    height: "40px",
-    width: "100%",
-    padding: "10px",
-    fontSize: '1em',
+    backgroundColor: "rgba(255,255,255,0)",
+    textColor: "#474747",
+    border: "1px solid " + "#afafaf",
+    borderFocus: "1px solid " + "rgba(0,180,105,1)",
+    borderRadius: "0",
+    height: "30px",
+    width: "280px",
+    padding: "0px",
+    caretColor: "#646464",
 
-    textTheme: {
-        textColor: '#545454',
-        fontSize: '1em'
+    titleTextTheme: {
+        textColor: '#2f2f2f',
+        fontSize: '1.1em',
+        fontWeight: '500',
+        textAlign: 'left',
+        margin: "0px 0px 10px 0px"
+    },
+
+    inputTextTheme: {
+        textColor: '#2f2f2f',
+        fontSize: '1.1em',
+        fontWeight: 'bold',
+        textAlign: 'left',
+        margin: "0px 0px 0px 0px"
+    },
+
+    placeholderTextTheme: {
+        textColor: '#ababab',
+        fontSize: '1.1em',
+        textAlign: 'left'
     }
 };
 

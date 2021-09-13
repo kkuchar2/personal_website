@@ -12,13 +12,12 @@ import {
     StyledQuestionWithLinkTheme
 } from "components/FormComponents/commonStyles";
 import {FormErrors} from "components/FormComponents/FormErrors/FormErrors";
-import {SignInWithGoogleButton} from "components/SignInWithGoogleButton/SignInWithGoogleButton";
 import withErrors from "components/withErrors";
 import {Button, Input, Spinner, Text} from "kuchkr-react-component-library";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
 
-import {StyledLoginFormComponent} from "./style";
+import { StyledLoginFormComponent } from "./style";
 
 const InputWithError = withErrors(Input);
 
@@ -27,13 +26,10 @@ const LoginForm = () => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
     const [disabled, setDisabled] = useState(false);
 
     const dispatch = useDispatch();
-
     const authState = useSelector(selectorAuth);
-
     const errors = authState.errors;
 
     const attemptLogin = useCallback(e => {
@@ -41,10 +37,6 @@ const LoginForm = () => {
         dispatch(tryLogin(email, password));
         setDisabled(true);
     }, [email, password]);
-
-    const attemptLoginWithGoogleCredentials = useCallback((response) => {
-        dispatch(tryLoginWithGoogleCredentials(response.accessToken));
-    }, []);
 
     const renderSignInButton = useCallback(() => {
         const path = authState.path;
@@ -62,10 +54,6 @@ const LoginForm = () => {
             setDisabled(false);
         }
     }, [errors]);
-
-    const onGoogleAuthFailure = useCallback((response) => {
-        console.log(response);
-    }, []);
 
     return <StyledLoginFormComponent {...animatedWindowProps}>
         <form onSubmit={attemptLogin} className={'form'} autoComplete="none">
@@ -98,19 +86,9 @@ const LoginForm = () => {
 
             <FormErrors errors={errors} translation={t}/>
 
-            <StyledLink style={{marginTop: 20}} to={'/forgotPassword'}>{t('FORGOT_PASSWORD')}</StyledLink>
+            <StyledLink style={{marginTop: 40}} to={'/forgotPassword'}>{t('FORGOT_PASSWORD')}</StyledLink>
 
             <StyledButtonGroup>{renderSignInButton()}</StyledButtonGroup>
-
-            <SignInWithGoogleButton
-                clientId="sdfdf"
-                buttonText={t('SIGNIN_WTH_GOOGLE')}
-                onSuccess={attemptLoginWithGoogleCredentials}
-                onFailure={onGoogleAuthFailure}
-                theme={'light'}
-                disabled={false}
-                uxMode={'popup'}
-            />
         </form>
     </StyledLoginFormComponent>;
 };

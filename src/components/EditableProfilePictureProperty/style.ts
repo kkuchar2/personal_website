@@ -1,4 +1,4 @@
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import CameraIcon from '@material-ui/icons/Camera';
 import styled from "styled-components";
 
 export interface StyledProfilePictureProps {
@@ -30,7 +30,7 @@ export const spinnerTheme = {
     }
 };
 
-export const StyledUploadFileButton = styled(FontAwesomeIcon)`
+export const StyledUploadFileButton = styled(CameraIcon)`
   background: rgba(91, 95, 126, 0.45);
   color: white;
   position: absolute;
@@ -44,12 +44,11 @@ export const StyledUploadFileButton = styled(FontAwesomeIcon)`
     font-size: 0.5em;
     padding: 7px;
   }
-  
+
   &:hover {
     background: rgba(83, 87, 117, 0.68);
     cursor: pointer;
   }
-
 `;
 
 export const StyledEditableProfilePictureProperty = styled.div`

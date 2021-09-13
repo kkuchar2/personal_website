@@ -1,4 +1,4 @@
-import {getFormFieldError} from "util/api_util";
+import {getFormFieldError} from "../api/api_util";
 
 import React, {useCallback, useEffect, useState} from "react";
 
@@ -10,19 +10,35 @@ import {useTranslation} from "react-i18next";
 
 const formFieldTheme = {
     backgroundColor: "rgba(255,255,255,0)",
-    textColor: "#1f1f1f",
-    placeholderTextColor: "#dbdbdb",
+    textColor: "#474747",
     border: "1px solid " + "#afafaf",
-    borderFocus: "1px solid " + "#0088ff",
+    borderFocus: "1px solid " + "rgba(0,180,105,1)",
     borderRadius: "0",
-    height: "40px",
+    height: "30px",
     width: "280px",
-    margin: "30px 0px 0px 0px",
+    padding: "0px",
+    caretColor: "#646464",
 
-    textTheme: {
-        fontWeight: "500",
-        textColor: '#3b3b3b',
-        fontSize: '1em'
+    titleTextTheme: {
+        textColor: '#2f2f2f',
+        fontSize: '1.1em',
+        fontWeight: '500',
+        textAlign: 'left',
+        margin: "0px 0px 10px 0px"
+    },
+
+    inputTextTheme: {
+        textColor: '#2f2f2f',
+        fontSize: '1.1em',
+        fontWeight: 'bold',
+        textAlign: 'left',
+        margin: "0px 0px 0px 0px"
+    },
+
+    placeholderTextTheme: {
+        textColor: '#ababab',
+        fontSize: '1.1em',
+        textAlign: 'left'
     }
 };
 
@@ -60,6 +76,7 @@ const withErrors = (WrappedInput: typeof Input) => {
 
         return <>
             <WrappedInput
+                style={{marginTop: 35}}
                 id={id}
                 theme={theme ? theme : formFieldTheme}
                 {...rest} />

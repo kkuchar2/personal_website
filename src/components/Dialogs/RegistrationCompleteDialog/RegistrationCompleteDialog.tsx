@@ -4,41 +4,37 @@ import {BaseDialogProps} from "components/Dialogs/types";
 import {Button, Text} from "kuchkr-react-component-library";
 
 import {
-    cancelButtonTheme,
-    confirmButtonTheme,
+    goHomeButtonTheme,
     descriptionTextTheme,
-    StyledConfirmationDialog,
+    StyledRegistrationCompleteDialog,
     StyledDialogButtonsSection,
     StyledDialogDescriptionSection,
     StyledDialogTitleSection,
     titleTextTheme
 } from "./style";
 
-export interface ConfirmationDialogProps extends BaseDialogProps{
+export interface RegistrationCompleteDialogProps extends BaseDialogProps {
     title: string,
     description: string,
-    onConfirm: (e: Event) => void,
-    onCancel: (e: Event) => void
+    onGoHome: (e: Event) => void
 }
 
-export const ConfirmationDialog = (props: ConfirmationDialogProps) => {
+export const RegistrationCompleteDialog = (props: RegistrationCompleteDialogProps) => {
 
-    const {title, description, onConfirm, onCancel} = props;
+    const {title, description, onGoHome} = props;
 
-    console.log('Rendering confirmation dialog');
-
-    return <StyledConfirmationDialog>
+    return <StyledRegistrationCompleteDialog>
         <StyledDialogTitleSection>
             <Text theme={titleTextTheme} text={title}/>
         </StyledDialogTitleSection>
 
         <StyledDialogDescriptionSection>
+            <img style={{marginBottom: 50}} src={"https://c.tenor.com/lBPGdhDqxJcAAAAC/keanu-reeves-whoa.gif"} width={400} />
             <Text theme={descriptionTextTheme} text={description}/>
         </StyledDialogDescriptionSection>
 
         <StyledDialogButtonsSection>
-            <Button theme={cancelButtonTheme} text={"Cancel"} onClick={onCancel}/>
-            <Button theme={confirmButtonTheme} text={"Confirm"} onClick={onConfirm}/>
+            <Button theme={goHomeButtonTheme} text={"Sign in"} onClick={onGoHome}/>
         </StyledDialogButtonsSection>
-    </StyledConfirmationDialog>;
+    </StyledRegistrationCompleteDialog>;
 };

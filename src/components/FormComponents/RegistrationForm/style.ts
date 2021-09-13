@@ -1,13 +1,6 @@
 import {motion} from "framer-motion";
 import styled from "styled-components";
 
-export const StyledUnknownError = styled.div`
-  justify-content: center;
-  display: flex;
-  align-items: center;
-  margin-top: 20px;
-`;
-
 export const StyledRegistrationFormComponent = styled(motion.div)`
   border-radius: 6px;
   background: #ffffff;
@@ -125,6 +118,3 @@ export const StyledRegistrationFormComponent = styled(motion.div)`
     }
   }
 `;
-
-export class justRememberedTextTheme {
-}

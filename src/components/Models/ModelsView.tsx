@@ -1,5 +1,3 @@
-import {withRequestComplete} from "util/util";
-
 import React, {useCallback, useEffect} from "react";
 
 import {useMediaQuery} from "@material-ui/core";
@@ -14,13 +12,16 @@ import {
 } from "appRedux/reducers/api/crud";
 import {changeCurrentViewedModel, selectorCurrentViewedModel, showDialog} from "appRedux/reducers/application";
 import {useAppDispatch} from "appRedux/store";
-import CreateNewModelItemDialog from "components/Dialogs/CreateNewModelItemDialog/CreateNewModelItemDialog";
+import {RequestState} from "axios-client-wrapper";
+import CreateNewModelItemDialog, {CreateNewModelItemDialogProps} from "components/Dialogs/CreateNewModelItemDialog/CreateNewModelItemDialog";
 import {animatedWindowProps3} from "components/FormComponents/animation";
 import {spinnerTheme} from "components/FormComponents/commonStyles";
 import Table from "components/Models/Table/Table";
 import {Button, Select, Spinner} from "kuchkr-react-component-library";
 import {useSelector} from "react-redux";
 import {OptionsType} from "react-select";
+
+import {withRequestComplete} from "../../api/util";
 
 import {addItemButtonTheme, modelSelectorTheme, StyledModelsView, StyledToolbar} from "./style";
 
@@ -81,11 +82,11 @@ const ModelsView = () => {
     const renderTable = useCallback(() => {
         const path = modelDataSelector.path;
         const isCtx = path === 'getModel';
-        const isPending = modelDataSelector.requestSent && !modelDataSelector.responseReceived;
+        const isPending = modelDataSelector.requestState === RequestState.Pending;
 
         const path2 = modelListSelector.path;
         const isCtx2 = path2 === 'listModels';
-        const isPending2 = modelListSelector.requestSent && !modelListSelector.responseReceived;
+        const isPending2 = modelListSelector.requestState === RequestState.Pending;
 
         if ((!rows && isCtx && isPending) || isCtx2 && isPending2) {
             return <div style={{marginTop: 100}}>
@@ -113,7 +114,7 @@ const ModelsView = () => {
     const renderToolbar = useCallback(() => {
         const path = modelListSelector.path;
         const isCtx = path === 'listModels';
-        const isPending = modelListSelector.requestSent && !modelListSelector.responseReceived;
+        const isPending = modelListSelector.requestState === RequestState.Pending;
 
         if (isCtx && isPending) {
             return <div style={{marginTop: 100}}>

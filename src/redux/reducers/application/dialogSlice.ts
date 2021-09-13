@@ -1,11 +1,10 @@
-import {ElementType} from "react";
-
 import {createSlice} from "@reduxjs/toolkit";
 import {AppDispatch, RootState} from "appRedux/store";
+import {BaseDialogProps} from "components/Dialogs/types";
 
 export interface DialogSliceState {
     opened: boolean,
-    component: ElementType | null,
+    component: (props: any) => JSX.Element | null,
     componentProps: any
 }
 
@@ -22,13 +21,26 @@ const dialogSlice = createSlice({
         },
         hide_dialog: (state) => {
             state.opened = false;
-            state.component = null;
+            state.component = () => null;
         },
     },
 });
 
-export const showDialog = (component: any) => async (dispatch: AppDispatch) => dispatch(show_dialog(component));
-export const hideDialog = () => async (dispatch: AppDispatch) => dispatch(hide_dialog());
+export interface ShowDialogArgs<T extends BaseDialogProps> {
+    // What dialog component should be displayed
+    component: (props: T) => JSX.Element,
+
+    // What props are passed to this dialog component
+    props: T
+}
+
+export const showDialog = <T extends BaseDialogProps>(args : ShowDialogArgs<T>) => {
+    return async (dispatch: AppDispatch) => dispatch(show_dialog(args));
+};
+
+export const hideDialog = () => async (dispatch: AppDispatch) => {
+    return dispatch(hide_dialog());
+};
 
 export const selectorDialogs = (state: RootState) => state.dialog;
 export const {show_dialog, hide_dialog} = dialogSlice.actions;

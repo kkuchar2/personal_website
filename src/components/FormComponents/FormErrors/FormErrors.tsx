@@ -1,9 +1,9 @@
-import {getResponseError} from "util/api_util";
-
 import React from "react";
 
 import {FormError} from "components/FormComponents/FormErrors/FormError";
 import _ from 'lodash';
+
+import {getResponseError} from "../../../api/api_util";
 
 export interface FormErrorsProps {
     errors: any, // TODO

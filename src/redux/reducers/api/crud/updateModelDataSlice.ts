@@ -1,6 +1,7 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {RootState} from "appRedux/store";
-import {sendPost} from "appRedux/util";
+import {API_URL, RootState} from "appRedux/store";
+import {sendPost} from "axios-client-wrapper";
+import {customResponseParser} from "axios-client-wrapper";
 
 const initialState = {
     path: null,
@@ -34,10 +35,13 @@ export const updateModelDataSlice = createSlice({
 
 export const tryUpdateModelData = (modelPackage: string, model: string, data: object) => {
     return sendPost({
+        apiUrl: API_URL,
         path: 'updateModel',
         onBefore: sentUpdateModelDataRequest,
         onSuccess: updateModelDataSuccess,
         onFail: updateModelDataFailed,
+        responseParser: customResponseParser,
+        withAuthentication: true,
         body: {
             'package': modelPackage,
             'model': model,

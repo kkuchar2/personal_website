@@ -4,6 +4,7 @@ import {tryAddItemToTable} from "appRedux/reducers/api/crud";
 import {hide_dialog, hideDialog} from "appRedux/reducers/application";
 import {useAppDispatch} from "appRedux/store";
 import {FieldRow} from "components/Dialogs/ConfirmationDialog/FieldRow/FieldRow";
+import {BaseDialogProps} from "components/Dialogs/types";
 import {getColumnProperties} from "components/Models/columnProperties";
 import {Button, Text} from "kuchkr-react-component-library";
 
@@ -25,13 +26,13 @@ const humanize = (str: string) => {
     return frags.join(' ');
 };
 
-export interface CreateNewModelItemDialogProps {
+export interface CreateNewModelItemDialogProps extends BaseDialogProps {
     modelPackage: string,
     modelName: string,
     fields: any // TODO
 }
 
-const CreateNewModelItemDialog = (props: CreateNewModelItemDialogProps) => {
+const CreateNewModelItemDialog = (props: CreateNewModelItemDialogProps) : JSX.Element =>{
 
     const {modelPackage, modelName, fields} = props;
 

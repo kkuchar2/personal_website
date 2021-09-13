@@ -58,11 +58,11 @@ export const booleanSelectTheme = {
 export const editRowButtonTheme = {
     width: "40px",
     height: "40px",
-    background: "rgba(0,180,105,1)",
-    disabledBackground: "rgba(47,47,47,0.43)",
-    hoverBackground: "rgb(0,141,83)",
+    background: "rgb(131,131,131)",
+    disabledBackground: "rgba(213,213,213,0.43)",
+    hoverBackground: "rgba(0,180,105,1)",
     border: "none",
-    borderRadius: "6px",
+    borderRadius: "50px",
     margin: "0px 0px 0px 10px",
 
     text: {

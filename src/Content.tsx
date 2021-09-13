@@ -1,9 +1,8 @@
-import {withSuspense} from "util/withSuspense";
-
 import React, {lazy, useCallback} from "react";
 
 import {Route, Switch} from "react-router-dom";
 
+import {withSuspense} from "./api/withSuspense";
 import {routes} from "./routes";
 
 const NotFound = lazy(() => import (/* webpackChunkName: "not-found" */ "pages/NotFoundPage/NotFoundPage"));

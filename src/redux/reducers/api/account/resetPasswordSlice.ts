@@ -1,6 +1,6 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {RootState} from "appRedux/store";
-import {sendPost} from "appRedux/util";
+import {API_URL, RootState} from "appRedux/store";
+import {customResponseParser, sendPost} from "axios-client-wrapper";
 
 const initialState = {
     requestPending: false,
@@ -26,10 +26,12 @@ export const resetPasswordSlice = createSlice({
 
 export const trySendResetPassword = (newPassword1: string, newPassword2: string, uid: string, token: string) => {
     return sendPost({
+        apiUrl: API_URL,
         path: 'resetPasswordConfirm',
         onBefore: sentResetPasswordRequest,
         onSuccess: resetPasswordSuccess,
         onFail: resetPasswordFailed,
+        responseParser: customResponseParser,
         body: {
             new_password1: newPassword1,
             new_password2: newPassword2,

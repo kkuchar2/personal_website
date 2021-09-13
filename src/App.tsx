@@ -11,16 +11,6 @@ import Content from "./Content";
 import './i18n';
 
 const GlobalStyle = createGlobalStyle`
-  html {
-    width: 100%;
-    height: 100%;
-    background: url("https://live.staticflickr.com/65535/49924646512_ee351b4d14_k.jpg") no-repeat center center fixed;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-  }
-
   body {
     height: 100%;
     margin: 0;

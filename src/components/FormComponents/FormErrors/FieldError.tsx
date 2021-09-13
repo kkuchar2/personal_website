@@ -1,7 +1,6 @@
 import React from "react";
 
-import {faExclamationCircle} from "@fortawesome/free-solid-svg-icons";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import ErrorIcon from '@material-ui/icons/Error';
 import {Text} from "kuchkr-react-component-library";
 
 import {errorTextTheme, StyledFieldError} from "./style";
@@ -15,7 +14,7 @@ export const FieldError = (props: FieldErrorProps) => {
     const {error} = props;
 
     return <StyledFieldError {...props}>
-        <FontAwesomeIcon className={"icon"} icon={faExclamationCircle}/>
+        <ErrorIcon className={"icon"}/>
         <Text theme={errorTextTheme} text={error}/>
     </StyledFieldError>;
 };

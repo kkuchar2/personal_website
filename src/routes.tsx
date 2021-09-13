@@ -1,4 +1,4 @@
-import {withSuspense} from "util/withSuspense";
+import {withSuspense} from "./api/withSuspense";
 
 import React, {lazy} from "react";
 

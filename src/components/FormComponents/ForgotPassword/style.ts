@@ -51,7 +51,7 @@ export const StyledUnknownError = styled.div`
 
 export const descriptionTextTheme = {
     textColor: "#474747",
-    fontSize: "15px",
+    fontSize: "1.2em",
     textAlign: "center",
     margin: "20px 0px 0px 0px"
 };

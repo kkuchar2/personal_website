@@ -56,7 +56,7 @@ module.exports = {
             configs: resolvePath('configs/'),
             appRedux: resolvePath('src/redux/'),
             components: resolvePath('src/components/'),
-            util: resolvePath('src/util/')
+            util: resolvePath('src/api/')
         }
     },
     optimization: optimization,

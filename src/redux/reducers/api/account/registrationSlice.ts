@@ -1,6 +1,6 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {AppDispatch, RootState} from "appRedux/store";
-import {sendPost} from "appRedux/util";
+import {API_URL, AppDispatch, RootState} from "appRedux/store";
+import {customResponseParser, sendPost} from "axios-client-wrapper";
 
 const initialState = {
     path: null,
@@ -31,11 +31,17 @@ export const registrationSlice = createSlice({
 
 export const tryRegister = (email: string, password: string) => {
     return sendPost({
+        apiUrl: API_URL,
         path: 'register',
         onBefore: registrationRequested,
         onSuccess: registrationSucceeded,
         onFail: registrationFailed,
-        body: {email: email, password: password}
+        responseParser: customResponseParser,
+        withAuthentication: false,
+        body: {
+            email: email,
+            password: password
+        }
     });
 };
 

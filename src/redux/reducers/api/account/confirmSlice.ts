@@ -1,6 +1,6 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {RootState} from "appRedux/store";
-import {sendPost} from "appRedux/util";
+import {API_URL, RootState} from "appRedux/store";
+import {customResponseParser, sendPost} from "axios-client-wrapper";
 
 const initialState = {
     status: "INIT",
@@ -25,10 +25,12 @@ export const confirmSlice = createSlice({
 
 export const tryConfirmAccount = (token: string) => {
     return sendPost({
+        apiUrl: API_URL,
         path: 'confirm-email',
         onBefore: accountConfirmationTokenSent,
         onSuccess: accountConfirmationSuccess,
         onFail: accountConfirmationError,
+        responseParser: customResponseParser,
         body: {key: token}
     });
 };

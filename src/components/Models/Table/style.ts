@@ -3,7 +3,6 @@ import styled from "styled-components";
 
 export const StyledTable = styled(motion.div)`
   min-width: 600px;
-  height: 1000px;
   min-height: 100px;
   max-width: 100%;
   margin-top: 20px;

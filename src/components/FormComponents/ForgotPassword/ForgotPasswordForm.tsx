@@ -1,6 +1,7 @@
 import React, {useCallback, useState} from "react";
 
 import {selectorForgotPassword, trySendForgotPassword} from "appRedux/reducers/api/account";
+import {RequestState} from "axios-client-wrapper";
 import {animatedWindowProps} from "components/FormComponents/animation";
 import {
     buttonTheme,
@@ -40,7 +41,7 @@ const ForgotPasswordForm = () => {
     const renderButton = useCallback(() => {
         const path = forgotPasswordState.path;
         const isForgotPasswordContext = path === 'forgotPassword';
-        const isRequestPending = forgotPasswordState.requestSent && !forgotPasswordState.responseReceived;
+        const isRequestPending = forgotPasswordState.requestState === RequestState.Pending;
 
         if (isForgotPasswordContext && isRequestPending) {
             return <Spinner theme={spinnerTheme} text={"Sending reset password request"}/>;

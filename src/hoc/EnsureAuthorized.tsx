@@ -7,7 +7,7 @@ import {Redirect, useLocation} from "react-router-dom";
 import {isOnAuthenticatedPage} from "routes";
 
 export const EnsureAuthorized = (WrappedComponent: ComponentType) =>  {
-    return (props: any) => {
+    const wrappedComponent = (props: any) => {
 
         const [sentAutologinRequest, setSentAutologinRequest] = useState(false);
 
@@ -80,4 +80,8 @@ export const EnsureAuthorized = (WrappedComponent: ComponentType) =>  {
             }
         }
     };
+
+    wrappedComponent.displayName = 'wrapped_ensure_authorized';
+
+    return wrappedComponent;
 };

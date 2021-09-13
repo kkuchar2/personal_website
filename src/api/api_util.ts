@@ -32,9 +32,3 @@ export const createError = (errorType: string, errorMessage: string, errorSource
         'source': errorSource
     };
 };
-
-export const createNetworkError = (source: string) => {
-    return {
-        "generic": [createError("network_error", "NETWORK_ERROR", source)]
-    };
-};

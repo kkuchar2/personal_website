@@ -1,13 +1,14 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {AppDispatch, RootState} from "appRedux/store";
-import {sendFilePost, sendPost} from "appRedux/util";
+import {API_URL, AppDispatch, RootState} from "appRedux/store";
+import {sendFilePost, sendPost} from "axios-client-wrapper";
+import {customResponseParser} from "axios-client-wrapper";
 
 export interface User {
     email: string,
-    avatarUrl: string
+    avatar: string
 }
 
-const emptyUser =  {email: '', avatarUrl: ''};
+const emptyUser = {email: '', avatar: ''};
 
 const initialState = {
     path: null,
@@ -23,6 +24,7 @@ const setState = (state: any, action: PayloadAction<any>, loggedIn: boolean, use
     const {errors = state.errors, path = 'default'} = action.payload ? action.payload : {};
 
     state.loggedIn = loggedIn;
+
     state.errors = errors;
     state.user = user;
     state.path = path;
@@ -110,61 +112,78 @@ export const authSlice = createSlice({
 
 export const tryLoginWithGoogleCredentials = (accessToken: string) => {
     return sendPost({
+        apiUrl: API_URL,
         path: 'googleLogin',
         onBefore: sentGoogleLoginRequest,
         onSuccess: googleLoginRequestSuccess,
         onFail: googleLoginRequestFailure,
+        responseParser: customResponseParser,
         body: {access_token: accessToken}
     });
 };
 
 export const tryAutoLogin = () => {
     return sendPost({
+        apiUrl: API_URL,
         path: 'autoLogin',
         onBefore: sentAutologinRequest,
         onSuccess: autoLoginSuccess,
         onFail: autoLoginFailed,
+        responseParser: customResponseParser,
+        withAuthentication: true,
         body: {}
     });
 };
 
 export const tryLogin = (user: string, password: string) => {
     return sendPost({
+        apiUrl: API_URL,
         path: 'login',
         onBefore: sentLoginRequest,
         onSuccess: loginSuccess,
         onFail: loginFailed,
+        responseParser: customResponseParser,
         body: {email: user, password: password}
     });
 };
 
 export const tryLogout = () => {
     return sendPost({
+        apiUrl: API_URL,
         path: 'logout',
         onBefore: sentLogoutRequest,
         onSuccess: logoutSuccess,
         onFail: logoutFailed,
+        responseParser: customResponseParser,
+        withAuthentication: true,
         body: {}
     });
 };
 
 export const tryDeleteAccount = () => {
     return sendPost({
+        apiUrl: API_URL,
         path: 'deleteAccount',
         onBefore: sentDeleteAccountRequest,
         onSuccess: deleteAccountSuccess,
         onFail: deleteAccountFailed,
+        responseParser: customResponseParser,
+        withAuthentication: true,
         body: {}
     });
 };
 
 export const tryChangeProfileImage = (file: File) => {
     return sendFilePost({
+        apiUrl: API_URL,
         path: 'changeProfileImage',
         onBefore: sentChangeProfileImage,
         onSuccess: changeProfileImageSuccess,
         onFail: changeProfileImageFailed,
-        body: file
+        responseParser: customResponseParser,
+        onUploadProgress: e => {
+        },
+        file: file
     });
 };
 

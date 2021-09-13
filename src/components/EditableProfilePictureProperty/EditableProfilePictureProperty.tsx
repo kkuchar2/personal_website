@@ -1,10 +1,10 @@
 import React, {useCallback, useEffect, useRef, useState} from "react";
 
-import {faCamera} from "@fortawesome/free-solid-svg-icons";
 import {useMediaQuery} from "@material-ui/core";
 import {selectorAuth, tryChangeProfileImage} from "appRedux/reducers/api/account";
+import {useAppDispatch} from "appRedux/store";
 import {Spinner} from "kuchkr-react-component-library";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 
 import {
     PropertyValueSection,
@@ -18,8 +18,9 @@ import {
 const EditableProfilePictureProperty = () => {
 
     const [selectedFile, setSelectedFile] = useState(null);
+    const [randomKey, setRandomKey] = useState(Date.now());
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const authState = useSelector(selectorAuth);
 
@@ -33,33 +34,43 @@ const EditableProfilePictureProperty = () => {
         uploadFileRef.current?.click();
     }, []);
 
-    const onFileUpload = useCallback(() => {
+    const onFileSelected = useCallback(() => {
+        console.log('On file selected');
         if (!selectedFile) {
             return;
         }
         dispatch(tryChangeProfileImage(selectedFile));
+        setRandomKey(Date.now());
     }, [selectedFile]);
 
     const onFileChange = useCallback((e) => {
         setSelectedFile(e.target.files[0]);
     }, []);
 
-    useEffect(() => onFileUpload(), [selectedFile]);
+    useEffect(() => onFileSelected(), [selectedFile]);
 
     const renderProfilePicture = useCallback(() => {
         const path = authState.path;
         const correctContext = path === 'changeProfileImage';
         const isRequestPending = authState.requestSent && !authState.responseReceived;
 
+        console.log('Auth state: ', authState);
+
         return <StyledProfilePicture
-                    url={isRequestPending && correctContext ? "" : authState.user.avatarUrl}
-                    size={isMobile ? 50 : 100}>
+            url={isRequestPending && correctContext ? "" : authState.user.avatar}
+            size={isMobile ? 50 : 100}>
             {isRequestPending && correctContext ? <Spinner theme={spinnerTheme} text={''}/> : null}
-            <input type="file" name="uploadFile" id="img" ref={uploadFileRef} style={{display: "none"}}
-                   onChange={onFileChange}/>
-            <StyledUploadFileButton icon={faCamera} onClick={onChangeImageClick}/>
+            <input
+                type="file"
+                name="uploadFile"
+                id="img"
+                key={randomKey}
+                ref={uploadFileRef}
+                style={{display: "none"}}
+                onChange={onFileChange}/>
+            <StyledUploadFileButton onClick={onChangeImageClick}/>
         </StyledProfilePicture>;
-    }, [authState, isMobile]);
+    }, [authState, isMobile, randomKey]);
 
     return <StyledEditableProfilePictureProperty>
         <StyledPropertyValues>

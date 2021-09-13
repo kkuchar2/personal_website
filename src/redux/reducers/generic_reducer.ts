@@ -4,66 +4,71 @@ import {
     PayloadAction,
     Slice,
     SliceCaseReducers,
-    ValidateSliceCaseReducers
+    ValidateSliceCaseReducers,
 } from "@reduxjs/toolkit";
-import {sendPost} from "appRedux/util";
+import {sendFilePost, sendGet, sendPost} from "axios-client-wrapper";
 
 export interface IResponsePayload {
-    path: string,
-    errors: any, // TODO
-    data: any // TODO
+    path: string;
+    errors: any;
+    data: any;
+}
+
+export enum RequestState {
+    Idle,
+    Pending,
+    ResponseReceived,
 }
 
 export interface BaseRequestSliceState {
-    path: string,
-    requestSent: boolean,
-    responseReceived: boolean,
-    responseData: Dictionary<any> // TODO,
-    errors: Array<any> // TODO
+    path: string;
+    requestState: RequestState;
+    responseData: Dictionary<any>;
+    errors: Array<string>;
 }
 
 export interface BeforeRequestPayload {
-    path: string
+    path: string;
 }
 
-export const createBaseRequestSlice = <Reducers extends SliceCaseReducers<BaseRequestSliceState>>({name = '', reducers}: {
-    name: string
-    reducers?: ValidateSliceCaseReducers<BaseRequestSliceState, Reducers>
+export const createBaseRequestSlice = <Reducers extends SliceCaseReducers<BaseRequestSliceState>>({
+                                                                                                      name = "",
+                                                                                                      reducers,
+                                                                                                  }: {
+    name: string;
+    reducers?: ValidateSliceCaseReducers<BaseRequestSliceState, Reducers>;
 }) => {
     return createSlice({
         name,
         initialState: {
-            path: '',
-            requestSent: false,
-            responseReceived: false,
+            path: "",
+            requestState: RequestState.Idle,
             responseData: {},
-            errors: []
+            errors: [],
         } as BaseRequestSliceState,
         reducers: {
-            onRequestSent: (state, action: PayloadAction<BeforeRequestPayload>)  => {
-                const {path = ''} = action.payload ? action.payload : {};
+            onRequestSent: (state, action: PayloadAction<BeforeRequestPayload>) => {
+                const { path = "" } = action.payload ? action.payload : {};
+                state.requestState = RequestState.Pending;
                 state.path = path;
             },
             onRequestSuccess: (state, action: PayloadAction<IResponsePayload>) => {
-                const {errors = [], path = '', data = {}} = action.payload ? action.payload : {};
+                const { errors = [], path = "", data = {} } = action.payload ? action.payload : {};
                 state.errors = errors;
                 state.path = path;
-                state.requestSent = false;
-                state.responseReceived = true;
-                state.responseData = action.payload.data;
+                state.requestState = RequestState.ResponseReceived;
+                state.responseData = data;
             },
             onRequestFailed: (state: BaseRequestSliceState, action: PayloadAction<IResponsePayload>) => {
-                const {errors = [], path = '', data = {}} = action.payload ? action.payload : {};
+                const { errors = [], path = "", data = {} } = action.payload ? action.payload : {};
                 state.path = path;
-                state.requestSent = false;
-                state.responseReceived = true;
+                state.requestState = RequestState.ResponseReceived;
                 state.responseData = data;
                 state.errors = errors;
             },
             onReset: (state: BaseRequestSliceState) => {
-                state.path = '';
-                state.requestSent = false;
-                state.responseReceived = false;
+                state.path = "";
+                state.requestState = RequestState.Idle;
                 state.responseData = {};
                 state.errors = [];
             },
@@ -72,11 +77,56 @@ export const createBaseRequestSlice = <Reducers extends SliceCaseReducers<BaseRe
     });
 };
 
-export const sendPostRequest = (path : string, body : object, slice: Slice<BaseRequestSliceState>) => {
-    return sendPost({ path: path,
+export const sendPostRequest = (
+    apiUrl: string,
+    path: string,
+    body: object,
+    slice: Slice<BaseRequestSliceState>,
+) => {
+    return sendPost({
+        apiUrl: apiUrl,
+        path: path,
         onBefore: slice.actions.onRequestSent,
         onSuccess: slice.actions.onRequestSuccess,
         onFail: slice.actions.onRequestFailed,
-        body: body
+        body: body,
+        withAuthentication: false,
+    });
+};
+
+export const sendGetRequest = (
+    apiUrl: string,
+    path: string,
+    slice: Slice<BaseRequestSliceState>,
+) => {
+    return sendGet({
+        apiUrl: apiUrl,
+        path: path,
+        onBefore: slice.actions.onRequestSent,
+        onSuccess: slice.actions.onRequestSuccess,
+        onFail: slice.actions.onRequestFailed,
+        params: {
+            q: "j%20k%20rowling",
+        },
+        withAuthentication: false,
+    });
+};
+
+export const sendFilePostRequest = (
+    apiUrl: string,
+    path: string,
+    file: File,
+    onUploadProgress: (progressEvent: any) => void = (evt) => {},
+    slice: Slice<BaseRequestSliceState>,
+) => {
+    return sendFilePost({
+        apiUrl: apiUrl,
+        path: path,
+        onBefore: slice.actions.onRequestSent,
+        onSuccess: slice.actions.onRequestSuccess,
+        onFail: slice.actions.onRequestFailed,
+        file: file,
+        onUploadProgress: onUploadProgress,
+        withAuthentication: false,
     });
 };

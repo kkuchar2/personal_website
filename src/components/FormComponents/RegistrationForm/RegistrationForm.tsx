@@ -1,6 +1,9 @@
-import React, {useCallback, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 
 import {selectorRegistration, tryRegister} from "appRedux/reducers/api/account";
+import {hideDialog, showDialog} from "appRedux/reducers/application";
+import CreateNewModelItemDialog from "components/Dialogs/CreateNewModelItemDialog/CreateNewModelItemDialog";
+import {RegistrationCompleteDialog} from "components/Dialogs/RegistrationCompleteDialog/RegistrationCompleteDialog";
 import {animatedWindowProps} from "components/FormComponents/animation";
 import {
     buttonTheme,
@@ -44,6 +47,33 @@ const RegistrationForm = () => {
         dispatch(tryRegister(email, password));
         setDisabled(true);
     };
+
+    useEffect(() => {
+        const path = registrationState.path;
+        const isRegistrationContext = path === 'register';
+        const isRequestComplete = registrationState.requestSent && !registrationState.responseReceived;
+        const errors = registrationState.errors;
+
+        console.log(registrationState);
+
+        if (isRequestComplete && errors.length === 0 && isRegistrationContext) {
+            dispatch(showDialog({
+                component: RegistrationCompleteDialog,
+                props: {
+                    title: 'Registration complete',
+                    description: 'Whoa, you have completed registration! We have sent you confirmation email!',
+                    onGoHome: () => {
+                        dispatch(hideDialog());
+                    }
+                }
+            }));
+        }
+
+    }, [registrationState]);
+
+    const goHome = useCallback(() => {
+
+    }, []);
 
     const renderSignUpButton = useCallback(() => {
         const path = registrationState.path;

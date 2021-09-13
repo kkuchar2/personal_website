@@ -1,7 +1,8 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {BaseRequestSliceState, IResponsePayload} from "appRedux/reducers/generic_reducer";
-import {AppDispatch, RootState} from "appRedux/store";
-import {sendPost} from "appRedux/util";
+import {BaseRequestSliceState, IResponsePayload, RequestState} from "appRedux/reducers/generic_reducer";
+import {API_URL, AppDispatch, RootState} from "appRedux/store";
+import {sendPost} from "axios-client-wrapper";
+import {customResponseParser} from "axios-client-wrapper";
 
 export interface IHeader {
 
@@ -32,7 +33,7 @@ const setState = (state: any, action: PayloadAction<IResponsePayload | any>, req
     state.requestSent = requestSent;
     state.responseReceived = responseReceived;
 
-    if (!data) {
+    if (Object.keys(data).length === 0) {
         return;
     }
 
@@ -63,8 +64,7 @@ export const getModelDataSlice = createSlice({
     name: 'getModelData',
     initialState: {
         path: '',
-        requestSent: false,
-        responseReceived: false,
+        requestState: RequestState.Idle,
         responseData: {},
         errors: [],
         modelsData: {},
@@ -79,30 +79,39 @@ export const getModelDataSlice = createSlice({
 
 export const getRangeModelData = (modelPackage: string, model: string, startIdx: number, endIdx: number) => {
     return sendPost({
+        apiUrl: API_URL,
         path: 'getModel',
         onBefore: sentGetModelDataRequest,
         onSuccess: getModelDataSuccess,
         onFail: getModelDataFailed,
+        responseParser: customResponseParser,
+        withAuthentication: true,
         body: {package: modelPackage, model: model, startIdx: startIdx, endIdx: endIdx}
     });
 };
 
 export const getSingleRowModelData = (modelPackage: string, model: string, idx: number) => {
     return sendPost({
+        apiUrl: API_URL,
         path: 'getModel',
         onBefore: sentGetModelDataRequest,
         onSuccess: getModelDataSuccess,
         onFail: getModelDataFailed,
+        responseParser: customResponseParser,
+        withAuthentication: true,
         body: {package: modelPackage, model: model, idx: idx}
     });
 };
 
 export const getAllModelData = (modelPackage: string, model: string) => {
     return sendPost({
+        apiUrl: API_URL,
         path: 'getModel',
         onBefore: sentGetModelDataRequest,
         onSuccess: getModelDataSuccess,
         onFail: getModelDataFailed,
+        responseParser: customResponseParser,
+        withAuthentication: true,
         body: {package: modelPackage, model: model}
     });
 };
