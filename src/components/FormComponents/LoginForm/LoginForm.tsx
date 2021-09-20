@@ -1,5 +1,5 @@
 import {selectorAuth, tryLogin} from "appRedux/reducers/api/account";
-import {animatedWindowProps} from "components/FormComponents/animation.js";
+import {animatedWindowProps} from "components/FormComponents/animation";
 import {
     buttonTheme,
     formTitleTheme,
@@ -8,11 +8,10 @@ import {
     StyledButtonGroup,
     StyledLink,
     StyledQuestionWithLinkTheme
-} from "components/FormComponents/commonStyles.js";
-import {FormErrors} from "components/FormComponents/FormErrors/FormErrors.jsx";
+} from "components/FormComponents/commonStyles";
+import {FormErrors} from "components/FormComponents/FormErrors/FormErrors";
 
-import {StyledLoginFormComponent} from "components/FormComponents/LoginForm/style.js";
-import withErrors from "components/withErrors.jsx";
+import withErrors from "components/withErrors";
 import {Button, Input, Spinner, Text} from "kuchkr-react-component-library";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
