@@ -60,9 +60,11 @@
     "kuchkr-react-component-library": "^2.1.25",
     "lodash": "^4.17.21",
     "moment-locales-webpack-plugin": "^1.2.0",
+    "node-polyfill-webpack-plugin": "^1.1.4",
     "react-datepicker": "^4.2.0",
     "react-grid-layout": "^1.2.5",
     "react-i18next": "^11.11.4",
+    "react-idle-timer": "^4.6.4",
     "react-leaflet": "^3.2.0",
     "redux": "^4.1.0",
     "sass": "^1.35.1",
@@ -94,5 +96,5 @@
     "redux-thunk": "^2.3.0",
     "universal-cookie": "^4.0.4"
   },
-  "buildDate": "20-09-2021 10:45:93"
+  "buildDate": "20-09-2021 11:14:34"
 }

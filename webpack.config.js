@@ -4,6 +4,7 @@ const CompressionPlugin = require('compression-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
+const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
 const webpack = require('webpack');
 
 const resolvePath = pathSegments => path.resolve(__dirname, pathSegments);
@@ -74,6 +75,7 @@ module.exports = {
         new MomentLocalesPlugin({localesToKeep: ['es-us', 'pl']}),
         new CompressionPlugin({algorithm: 'gzip', test: /\.js$/}),
         new webpack.ProvidePlugin({ process: 'process/browser'}),
+        new NodePolyfillPlugin(),
         new CopyPlugin({
             patterns: [
                 {from: resolvePath('assets/images'), to: resolvePath('dist/assets/images')},

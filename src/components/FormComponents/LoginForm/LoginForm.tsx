@@ -1,5 +1,5 @@
 import {selectorAuth, tryLogin} from "appRedux/reducers/api/account";
-import {animatedWindowProps} from "components/FormComponents/animation";
+import {defaultShowUpAnimation} from "components/FormComponents/animation";
 import {
     buttonTheme,
     formTitleTheme,
@@ -54,7 +54,7 @@ const LoginForm = () => {
         }
     }, [errors]);
 
-    return <StyledLoginFormComponent {...animatedWindowProps}>
+    return <StyledLoginFormComponent {...defaultShowUpAnimation}>
         <form onSubmit={attemptLogin} className={'form'} autoComplete="none">
             <Text theme={formTitleTheme} text={t('SIGN_IN')}/>
 
